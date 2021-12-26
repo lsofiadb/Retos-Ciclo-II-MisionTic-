@@ -1,0 +1,118 @@
+CREATE database rigotiendas;
+use rigotiendas;
+
+CREATE TABLE categoria(
+	idCategoria integer AUTO_INCREMENT,
+    nombre varchar(12),
+    PRIMARY KEY(idCategoria)
+);
+
+INSERT INTO categoria (nombre) VALUES ("Hogar");
+INSERT INTO categoria (nombre) VALUES ("Oficina");
+INSERT INTO categoria (nombre) VALUES ("Juguetería");
+INSERT INTO categoria (nombre) VALUES ("Papelería");
+
+SELECT * FROM categoria;
+
+CREATE TABLE bodega(
+	idBodega integer AUTO_INCREMENT,
+    nombre VARCHAR(30),
+    cantidadPisos integer,
+    PRIMARY KEY(idBodega)
+);
+
+INSERT INTO bodega (nombre,cantidadPisos) VALUES ("Bodega norte",1);
+INSERT INTO bodega (nombre,cantidadPisos) VALUES ("Bodega timiza",4);
+INSERT INTO bodega (nombre,cantidadPisos) VALUES ("Zona Industrial",2);
+INSERT INTO bodega (nombre,cantidadPisos) VALUES ("Zona franca",6);
+
+SELECT * FROM bodega;
+
+CREATE TABLE proveedor(
+	idProveedor integer AUTO_INCREMENT,
+    nombre varchar(30),
+    esActivo varchar(2),
+    PRIMARY KEY(idProveedor)
+);
+
+INSERT INTO proveedor(nombre, esActivo) VALUES ("Juguetes Marcopolo","si");
+INSERT INTO proveedor(nombre, esActivo) VALUES ("Panamericana","si");
+INSERT INTO proveedor(nombre, esActivo) VALUES ("Electrocentro","no");
+INSERT INTO proveedor(nombre, esActivo) VALUES ("Toy mercas","si");
+INSERT INTO proveedor(nombre, esActivo) VALUES ("Distribuidora Golden","si");
+INSERT INTO proveedor(nombre, esActivo) VALUES ("Compra hogar","si");
+
+SELECT * FROM proveedor;
+
+CREATE TABLE suministro(
+	idSuministro integer AUTO_INCREMENT,
+    nombre varchar(30),
+    precio integer,
+    sum_idCategoria integer,
+    PRIMARY KEY (idSuministro),
+    FOREIGN KEY(sum_idCategoria) REFERENCES categoria(idCategoria)
+);
+
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("Balón Golty profesional",85000,3);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("Borradores x 12 und",12200,4);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("Cubrelecho King",130000,1);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("impresora",550300,2);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("Lampara",90000,1);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("Marcador colores x 12 und",18700,4);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("XBox",18700,3);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("Pista de carros importada",320000,3);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("Resma papel carta",12000,4);
+INSERT INTO suministro(nombre,precio,sum_idCategoria) VALUES ("Teléfono inalámbrico",275000,2);
+
+DROP TABLE suministro;
+SELECT * FROM suministro;
+
+CREATE TABLE cotizacion(
+	idCotizacion integer AUTO_INCREMENT,
+    cot_idSuministro integer,
+    cot_idProveedor integer,
+    fecha date,
+    PRIMARY KEY (idCotizacion),
+    FOREIGN KEY (cot_idSuministro) REFERENCES suministro(idSuministro),
+    FOREIGN KEY (cot_idProveedor) REFERENCES proveedor(idProveedor)
+);
+
+INSERT INTO cotizacion (cot_idSuministro,cot_idProveedor,fecha) VALUES (5,1,"2020-11-19 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(4,3,"2021-06-01 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(9,6,"2021-02-10 00:00:00 ");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(7,5,"2018-07-12 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(3,4,"2021-12-01 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(8,1,"2021-03-20 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(1,1,"2021-04-28 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(7,4,"2019-06-15 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(2,2,"2020-07-11 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(6,2,"2021-09-19 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(5,5,"2019-08-21 00:00:00");
+INSERT INTO cotizacion(cot_idSuministro,cot_idProveedor,fecha) VALUES(3,4,"2021-08-18 00:00:00");
+
+
+CREATE TABLE almacenar(
+	idAlmacenar integer AUTO_INCREMENT,
+    alm_idSuministro integer,
+    alm_idBodega integer,
+    PRIMARY KEY (idAlmacenar),
+    FOREIGN KEY (alm_idSuministro) REFERENCES suministro(idSuministro),
+    FOREIGN KEY (alm_idBodega) REFERENCES bodega(idBodega)
+);
+
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (7,1);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (1,1);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (8,1);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (5,2);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (5,2);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (10,2);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (9,2);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (6,3);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (3,3);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (1,3);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (2,4);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (7,4);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (10,4);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (3,4);
+INSERT INTO almacenar (alm_idSuministro,alm_idBodega) VALUES (4,4);
+
